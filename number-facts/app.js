@@ -1,26 +1,32 @@
 let $div
-
+let facts = [];
+const queryParams = {
+    json: true
+  };
 $(document).ready(function() {
     $div = $('#facts');
-    let promises = [];
-    const queryParams = {
-        json: true
-      };
+    
+    get_facts();
+    
+    
+  });
+
+async function get_facts(){
     for (let i = 1; i < 5; i++){
-        promises.push(
-            axios.get('http://numbersapi.com/84', {params: queryParams})
+        facts.push(
+            await axios.get('http://numbersapi.com/84', {params: queryParams})
         )
     }
-
-    Promise.all(promises)
-    .then(facts => (
-        facts.forEach(f => addToScreen(f))
-    ))
-    .catch(err => console.log(err));
-  });
+    for (let fact of facts){
+        console.log('DUDE');
+        addToScreen(fact);
+    }
+    
+}
 
 
 function addToScreen(fact){
+    console.log(fact);
     let text = fact.data.text;
 
     $div.append(`<p>${text}</p>`);
